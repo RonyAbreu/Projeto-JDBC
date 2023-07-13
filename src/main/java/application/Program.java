@@ -19,8 +19,10 @@ public class Program {
         System.out.println("=== TEST 2: seller findByDepartment ===");
         Department department = new Department(2,null);
         List<Seller> sellerList = sellerDao.findByDepartment(department);
-        for (Seller s: sellerList) {
-            System.out.println(s);
-        }
+        sellerList.forEach(name -> System.out.println(name));
+
+        System.out.println("=== TEST 3: seller findAll ===");
+        List<Seller> sellerAll = sellerDao.findAll();
+        sellerAll.forEach(System.out::println);
     }
 }
