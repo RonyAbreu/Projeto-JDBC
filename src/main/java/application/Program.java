@@ -31,10 +31,14 @@ public class Program {
         sellerDao.insertSeller(newSeller);
         System.out.println("Inserido! Novo id = " + newSeller.getId());
 
-        System.out.println("=== TEST 4: seller insert ===");
+        System.out.println("=== TEST 5: seller update ===");
         seller = sellerDao.findById(1);
         seller.setName("Bob Waine");
         sellerDao.updateSeller(seller);
         System.out.println("Usuário atualizado!");
+
+        System.out.println("=== TEST 6: seller delete ===");
+//        System.out.println("Usuário sendo deletado: " + sellerDao.findById(11));
+        sellerDao.deleteById(11);
     }
 }
