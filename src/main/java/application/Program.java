@@ -18,7 +18,7 @@ public class Program {
         System.out.println(seller);
 
         System.out.println("=== TEST 2: seller findByDepartment ===");
-        Department department = new Department(2,null);
+        Department department = new Department(2,"Roblox");
         List<Seller> sellerList = sellerDao.findByDepartment(department);
         sellerList.forEach(name -> System.out.println(name));
 
@@ -30,5 +30,11 @@ public class Program {
         Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 4000.0, department);
         sellerDao.insertSeller(newSeller);
         System.out.println("Inserido! Novo id = " + newSeller.getId());
+
+        System.out.println("=== TEST 4: seller insert ===");
+        seller = sellerDao.findById(1);
+        seller.setName("Bob Waine");
+        sellerDao.updateSeller(seller);
+        System.out.println("Usuário atualizado!");
     }
 }
