@@ -20,6 +20,8 @@ public class Program2 {
         System.out.println("Departamento atualizado com sucesso!");
 
         System.out.println("=== TEST 3: department delete ===");
+        departmentDao.deleteById(8);
+        System.out.println("Usuário Deletado");
 
         System.out.println("=== TEST 4: department findById ===");
 
