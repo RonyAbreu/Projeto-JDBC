@@ -24,6 +24,8 @@ public class Program2 {
         System.out.println("Usuário Deletado");
 
         System.out.println("=== TEST 4: department findById ===");
+        System.out.println("Usuário encontrado!");
+        System.out.println(departmentDao.findById(1));
 
         System.out.println("=== TEST 5: department findAll ===");
 
