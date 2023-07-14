@@ -15,6 +15,9 @@ public class Program2 {
         System.out.println("Departamento inserido com sucesso!");
 
         System.out.println("=== TEST 2: department update ===");
+        Department newDepartment = new Department(7,"Phantom");
+        departmentDao.updateDepartment(newDepartment);
+        System.out.println("Departamento atualizado com sucesso!");
 
         System.out.println("=== TEST 3: department delete ===");
 

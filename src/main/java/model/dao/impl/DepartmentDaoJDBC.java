@@ -19,7 +19,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     public void insertDepartment(Department d) {
         PreparedStatement st = null;
         try{
-            st = conn.prepareStatement("insert into Department (Name) values (?)", Statement.RETURN_GENERATED_KEYS);
+            st = conn.prepareStatement("insert into department (Name) values (?)", Statement.RETURN_GENERATED_KEYS);
 
             st.setString(1,d.getName());
 
@@ -41,7 +41,22 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void updateDepartment(Department d) {
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement("update department set Name = ? where Id = ?");
 
+            st.setString(1, d.getName());
+            st.setInt(2, d.getId());
+
+            int rowsAffect = st.executeUpdate();
+            if (rowsAffect == 0){
+                throw new DbException("Usuário inválido! Insira um Id válido");
+            }
+        } catch (SQLException e){
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
