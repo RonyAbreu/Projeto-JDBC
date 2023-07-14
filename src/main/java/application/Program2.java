@@ -4,6 +4,8 @@ import entities.Department;
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
 
+import java.util.List;
+
 public class Program2 {
     public static void main(String[] args) {
 
@@ -28,6 +30,8 @@ public class Program2 {
         System.out.println(departmentDao.findById(1));
 
         System.out.println("=== TEST 5: department findAll ===");
+        List<Department> departmentList = departmentDao.findAll();
+        departmentList.forEach(System.out::println);
 
     }
 }
