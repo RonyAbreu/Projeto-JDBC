@@ -3,6 +3,7 @@ package model.dao.impl;
 import db.DB;
 import db.DbException;
 import entities.Department;
+import entities.EntitiesException;
 import entities.Seller;
 import model.dao.SellerDao;
 
@@ -19,34 +20,50 @@ public class SellerDaoJDBC implements SellerDao {
         this.conn = conn;
     }
 
+    private boolean existeSeller(PreparedStatement st, ResultSet rs, Seller s) throws SQLException {
+        st = conn.prepareStatement("select * from seller where Name = ?");
+        st.setString(1,s.getName());
+        rs = st.executeQuery();
+        return rs.next();
+    }
+
     @Override
-    public void insertSeller(Seller s) {
+    public void insertSeller(Seller s){
         PreparedStatement st = null;
+        ResultSet resultSet = null;
         try{
-            st = conn.prepareStatement("insert into seller (Name, Email, BirthDate, BaseSalary, DepartmentId) values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-
-            st.setString(1,s.getName());
-            st.setString(2,s.getEmail());
-            st.setDate(3, new java.sql.Date(s.getBirthDate().getTime()));
-            st.setDouble(4,s.getBaseSalary());
-            st.setInt(5,s.getDepartment().getId());
-
-            int rowsAffect = st.executeUpdate();
-
-            if (rowsAffect > 0){
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()){
-                    int id = rs.getInt(1);
-                    s.setId(id);
-                }
-                DB.closeResultSet(rs);
+            if(existeSeller(st,resultSet,s)){
+                throw new EntitiesException("Este usuário já existe!");
             } else {
-                throw new DbException("Nenhuma linha foi afetada!");
+                st = conn.prepareStatement("insert into seller (Name, Email, BirthDate, BaseSalary, DepartmentId) values (?,?,?,?,?)",
+                        Statement.RETURN_GENERATED_KEYS);
+
+                st.setString(1,s.getName());
+                st.setString(2,s.getEmail());
+                st.setDate(3, new java.sql.Date(s.getBirthDate().getTime()));
+                st.setDouble(4,s.getBaseSalary());
+                st.setInt(5,s.getDepartment().getId());
+
+                int rowsAffect = st.executeUpdate();
+
+                if (rowsAffect > 0){
+                    ResultSet rs = st.getGeneratedKeys();
+                    if (rs.next()){
+                        int id = rs.getInt(1);
+                        s.setId(id);
+                    }
+                    DB.closeResultSet(rs);
+                } else {
+                    throw new DbException("Nenhuma linha foi afetada!");
+                }
+
             }
+
         } catch (SQLException e){
             throw new DbException(e.getMessage());
         } finally {
             DB.closeStatement(st);
+            DB.closeResultSet(resultSet);
         }
     }
 
