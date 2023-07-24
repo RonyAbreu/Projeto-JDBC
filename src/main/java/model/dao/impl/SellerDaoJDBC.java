@@ -83,6 +83,8 @@ public class SellerDaoJDBC implements SellerDao {
             st.executeUpdate();
         } catch (SQLException e){
             throw new DbException(e.getMessage());
+        } catch (NullPointerException e){
+            throw new DbException("Usuário não Existe!");
         } finally {
             DB.closeStatement(st);
         }
@@ -120,8 +122,9 @@ public class SellerDaoJDBC implements SellerDao {
                 Department dep = instatiateDepartment(rs);
                 Seller sel = instatiateSeller(rs,dep);
                 return sel;
+            } else {
+                throw new DbException("Usuário não existe!");
             }
-            return null;
         } catch (SQLException e){
             throw new DbException(e.getMessage());
         } finally {
